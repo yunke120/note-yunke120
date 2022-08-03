@@ -181,9 +181,11 @@ ref:1000
 - 将属性和行为作为一个整体，表现生活中的事物
 - 将属性和行为加以权限控制
 
-## 静态成员
+## C++对象模型和this指针
 
-### 静态成员变量
+### 成员变量和成员函数
+
+**静态成员变量**
 
 1. 所有对象共享同一份内存
 2. 编译阶段就分配内存
@@ -196,9 +198,7 @@ ref:1000
 
 访问权限：类外访问不到私有静态变量
 
-
-
-### 静态成员函数
+**静态成员函数**
 
 1. 所有对象共享同一个函数
 2. 静态成员函数只能访问静态成员变量
@@ -210,7 +210,7 @@ ref:1000
 
 访问权限：类外访问不到私有静态函数
 
-### 成员变量和成员函数存储
+**成员变量和成员函数存储**
 
 1. 非静态成员变量，属于类的对象上
 2. 静态成员变量，不属于类的对象上
@@ -227,3 +227,193 @@ class B{
 } 占用4字节，只有a属于类的对象
 ```
 
+### this指针概念
+
+1. 解决名称冲突（当形参与成员变量名称相同时）
+2. 返回对象本身用`*this`（链式编程）
+
+### const修饰成员函数
+
+**常函数**
+
+- 成员函数后加const成常函数
+- 常函数内不可以修改成员属性
+- 成员属性声明时加关键字mutable后，在常函数内依然可以修改
+
+**常对象**
+
+- 声明对象前加const成常对象
+- 常对象只能调用常函数
+
+## 友元
+
+目的：让一个函数或类访问另一个类中的私有成员  
+
+关键字：friend
+
+三种实现：
+
+1. 全局函数做友元
+
+   ```c++
+   #include <iostream>
+   
+   using namespace std;
+   class Building
+   {
+       /* 将全局函数放在类中前加friend即可 */
+       friend void goodGay(Building *building);
+   public:
+       Building()
+       {
+           m_SittingRoom = "sitting room";
+           m_BedRoom = "bed room";
+       }
+       string m_SittingRoom;
+   
+   private:
+       string m_BedRoom;
+   };
+   
+   void goodGay(Building *building)
+   {
+       cout << "good friend is visiting " << building->m_SittingRoom << endl;
+       cout << "good friend is visiting " << building->m_BedRoom << endl;
+   }
+   
+   int main() {
+       Building building;
+       goodGay(&building);
+       return 0;
+   }
+   ```
+
+2. 类做友元
+
+   ```c++
+   #include <iostream>
+   #include <string>
+   using namespace std;
+   class GoodGay;
+   class Building
+   {
+       /* 可以访问私有权限 */
+       friend class GoodGay;
+   public:
+       Building()
+       {
+           m_SittingRoom = "sitting room";
+           m_BedRoom = "bed room";
+       }
+       string m_SittingRoom;
+   
+   private:
+       string m_BedRoom;
+   };
+   
+   class GoodGay
+   {
+   public:
+       Building *building;
+       GoodGay()
+       {
+           this->building = new Building;
+       }
+       void visit()// 访问Building中的属性
+       {
+           cout << "good friend is visiting " << building->m_SittingRoom << endl;
+           cout << "good friend is visiting " << building->m_BedRoom << endl;
+       }
+   
+   };
+   
+   int main() {
+       GoodGay gay;
+       gay.visit();
+       return 0;
+   }
+   ```
+
+3. 成员函数做友元
+
+   ```c++
+   friend void GoodGay::visit();
+   ```
+
+## 运算符重载
+
+- 加号运算符重载
+
+  ```
+  Person operator+(Person &p1,Person &p2)
+  {
+  	Person temp;
+  	temp.a = p1.a + p2.a;
+  	return temp;
+  }
+  Person operator+(Person &p1,int num)
+  {
+  	Person temp;
+  	temp.a = p1.a + num;
+  	return temp;
+  }
+  Person p3 = p1 + p2;
+  Person p3 = p1 + 10;
+  ```
+
+## 继承
+
+![1659442664462](figures/1659442664462.png)
+
+继承中的构造和析构顺序：
+
+- 构造：先父类，后子类
+- 析构：先子类，后父类
+
+如果通过子类成员访问父类中的同名属性或函数需要加上父类作用域 
+
+## 多态
+
+当子类重写父类的虚函数时，子类的虚函数表内部会替换成子类的虚函数表。当父类的指针或引用指向子类对象时，发生多态
+
+![1659446571211](figures/1659446571211.png)
+
+**多态好处**
+
+- 组织结构清晰
+- 可读性强
+- 可维护性好
+
+**纯虚函数和抽象类**
+
+​		在多态中，通常父类中的虚函数的实现是毫无意义的，主要都是调用子类重写的内容，因此可以将虚函数改为纯虚函数。
+
+纯虚函数语法：`virtual 返回值类型 函数名 （参数列表）= 0；`
+
+当类中有了纯虚函数，这个类也叫抽象类
+
+抽象类特点：
+
+- 无法实例化对象
+- 子类必须重写抽象类中的纯虚函数，否装也属于抽象类
+
+虚虚构和纯虚析构
+
+多态使用时，如果子类中有属性开辟到堆区，那么父类指针在释放时无法调用到子类的析构代码
+
+解决方式：将父类中的析构函数改为虚析构或纯虚析构
+
+虚析构或纯虚析构的共性：
+
+- 可以解决父类释放子类对象
+- $\color{#FF0000}{都需要有具体的函数实现}$ 
+
+区别：
+
+- 如果是纯虚析构，该类属于抽象类，无法实例化对象
+
+虚析构语法：`virtual ~类名(){}`
+
+纯虚析构语法：`virtual ~类名()=0`
+
+​							`类名::~类名(){}`
