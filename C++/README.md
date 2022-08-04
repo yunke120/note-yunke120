@@ -408,7 +408,7 @@ class B{
 - 可以解决父类释放子类对象
 - $\color{#FF0000}{都需要有具体的函数实现}$ 
 
-区别：
+区别： 
 
 - 如果是纯虚析构，该类属于抽象类，无法实例化对象
 
@@ -417,3 +417,255 @@ class B{
 纯虚析构语法：`virtual ~类名()=0`
 
 ​							`类名::~类名(){}`
+
+## 模板
+
+### 函数模板
+
+```c++
+template <class T>
+函数
+```
+
+**示例**
+
+```c++
+template <class T>
+void swap(T &a, T &b)
+{
+	T temp;
+	temp = a; a = b; b = temp;
+}
+```
+
+**调用**
+
+```c++
+int a = 10, b = 20;
+swap(a, b); // 自动类型转换，不会发生隐式类型转换
+swap<int>(a, b); // 指定类型转换，会发生隐式类型转换
+```
+
+### 类模板
+
+```c++
+template <class T>
+类
+```
+
+**示例**
+
+```c++
+template <class T>
+// class Person(T NameType, T AgeType=int)//可以有默认参数
+class Person(T NameType, T AgeType)
+{
+public:
+	Person(NameType name, AgeType age)
+    {
+        this->m_Name = name;
+        this->m_Age = age;
+    }
+    NameType m_Name;
+    AgeType m_Age;
+};
+```
+
+**调用**
+
+```c++
+Person<string, int> p("Peter", 100);//只能显示调用
+```
+
+ ### 案例
+
+要求如下：
+
+![1659588190245](figures/1659588190245.png)
+
+```c++
+//
+// Created by F_188 on 2022/8/4.
+//
+#ifndef FRIEND_MYARRAY_H
+#define FRIEND_MYARRAY_H
+#include <iostream>
+
+using namespace std;
+
+template <class T>
+class MyArray {
+
+public:
+    MyArray(int capacity) // 有参构造
+    {
+        this->m_Capacity = capacity;
+        this->m_Size = 0;
+        this->pAddress = new T[this->m_Capacity];
+    }
+
+    // 拷贝构造
+    MyArray(const MyArray& arr)
+    {
+        this->m_Capacity = arr.m_Capacity;
+        this->m_Size = arr.m_Size;
+//        this->pAddress = arr.pAddress; // 浅拷贝
+
+        this->pAddress = new T[arr.m_Capacity]; //深拷贝，重新分配空间
+        //拷贝数据
+        for (int i = 0; i < this->m_Size; i++) {
+            this->pAddress[i] = arr.pAddress[i];
+        }
+    }
+
+    // operator= 防止浅拷贝问题
+    MyArray& operator=(const MyArray &arr)
+    {
+        // 先判断原来堆区是否有数据，如果有先释放
+        if(this->pAddress != NULL)
+        {
+            delete[] this->pAddress;
+            this->pAddress = NULL;
+            this->m_Capacity = 0;
+            this->m_Size = 0;
+        }
+        // 深拷贝
+        this->m_Capacity = arr.m_Capacity;
+        this->m_Size = arr.m_Size;
+        this->pAddress = new T[arr.m_Capacity];
+        for(int i = 0; i < this->m_Size; i++)
+        {
+            this->pAddress[i] = arr.pAddress[i];
+        }
+        return *this;
+    }
+
+    ~MyArray()
+    {
+        if(this->pAddress != NULL)
+        {
+            delete[] this->pAddress;
+            this->pAddress = nullptr;
+        }
+    }
+
+    // 尾插法
+    void Push_Back(const T & val)
+    {
+        if(this->m_Capacity == this->m_Size) return;
+        this->pAddress[this->m_Size] = val;
+        this->m_Size ++;
+    }
+
+    //尾删法
+    void Pop_Back()
+    {
+        // 让用户访问不到最后一个元素即可。逻辑删除
+        if(this->m_Size == 0) return;
+        this->m_Size --;
+    }
+    // 通过下标访问数组中的元素
+    T & operator[](int index)
+    {
+//        if(index > this->m_Size) return
+        return this->pAddress[index];
+    }
+    //返回数组容量
+    int getCapacity()
+    {
+        return m_Capacity;
+    }
+    //返回数组大小
+    int getSize()
+    {
+        return m_Size;
+    }
+private:
+    T *pAddress; // 指针指向堆区开辟的真实数组
+    int m_Capacity; // 数组容量
+    int m_Size; //数组大小
+};
+
+
+#endif //FRIEND_MYARRAY_H
+
+```
+
+```c++
+#include <iostream>
+#include <string>
+
+#include "MyArray.h"
+using namespace std;
+
+void printIntArr(MyArray<int> &arr)
+{
+    for (int i = 0; i < arr.getSize(); i++)
+    {
+        cout << arr[i] << endl;
+    }
+}
+
+void test01()
+{
+    MyArray<int>arr1(5);
+    for (int i = 0; i < 5; i++)
+    {
+        arr1.Push_Back(i);
+    }
+    cout << "arr1" << endl;
+    printIntArr(arr1);
+    cout << "arr2" << endl;
+    MyArray<int>arr2(arr1);
+    arr2.Pop_Back();
+    printIntArr(arr2);
+    cout << "arr2 capacity:" << arr2.getCapacity() << endl;
+    cout << "arr2 size:" << arr2.getSize() << endl;
+//    MyArray<int>arr3(100);
+//    arr3 = arr1;
+}
+
+// 测试自定义数据类型
+class Person
+{
+public:
+    Person(){};
+    Person(string name, int age){
+        this->m_Name = name;
+        this->m_Age = age;
+    };
+    string  m_Name;
+    int m_Age;
+};
+
+void printPersonArr(MyArray<Person> &arr)
+{
+    for (int i = 0; i < arr.getSize(); i++)
+    {
+        cout << "name: " << arr[i].m_Name << " age:" << arr[i].m_Age << endl;
+    }
+}
+
+void test()
+{
+    MyArray<Person> arr(10);
+    Person p1("A", 10);
+    Person p2("B", 20);
+    Person p3("C", 30);
+    Person p4("D", 40);
+    Person p5("E", 50);
+    //将数据插入导容器中
+    arr.Push_Back(p1);
+    arr.Push_Back(p2);
+    arr.Push_Back(p3);
+    arr.Push_Back(p4);
+    arr.Push_Back(p5);
+
+    printPersonArr(arr);
+}
+int main() {
+    test();
+    return 0;
+}
+```
+
