@@ -788,3 +788,34 @@ queue是一种**先进先出**的数据结构，它有两个出口。
 
 list有一个重要的性质，插入操作和删除操作都不会造成原有list迭代器的失效，这在vector是不成立的
 
+### set容器
+
+
+
+```
+class MyCompare{ 
+public:
+	bool operator()(int a, int b)
+	{
+		return a > b;
+	}
+};
+```
+
+默认从小到大，指定排序为从大到小：在插数据之前 `set<int,MyCompare>s;`，利用**仿函数**指定容器排序规则。
+
+### map容器
+
+​		map/multimap属于关联式容器，底层结构是二叉树实现
+
+- map中所有元素都是pair
+- pair中第一个元素为key键值，起到索引作用，第二个元素为value实值
+- 所有元素都会根据元素的键值自动排序
+
+优点：可以根据key值快速找到value值
+
+map和multimap的区别：
+
+- map不允许容器中有重复的key值元素
+- multimap允许容器中有重复的key值元素
+
