@@ -819,3 +819,92 @@ map和multimap的区别：
 - map不允许容器中有重复的key值元素
 - multimap允许容器中有重复的key值元素
 
+### 函数对象
+
+概念：
+
+- 重载函数调用操作符的类，其对象常称为函数对象
+- 函数对象使用重载时，行为类似函数调用，也叫仿函数
+
+本质：函数对象（仿函数）是一个类，不是一个函数
+
+使用：
+
+- 函数对象在使用时，可以像普通函数那样调用，可以有参数，可以有返回值
+
+  ```c++
+  class MyAdd
+  {
+  public:
+      int operator()(int v1,int v2)
+      {
+          return v1 + v2;
+      }
+  };
+  
+  void test01()
+  {
+      MyAdd myAdd;
+      cout << myAdd(10, 5) << endl;
+  }
+  ```
+
+  
+
+- 函数对象超出普通函数的概念，函数对象可以有自己的状态
+
+  ```c++
+  class MyPrint
+  {
+  public:
+      MyPrint()
+      {
+          this->count = 0;
+      }
+      int operator()(string s)
+      {
+          cout << s << endl;
+          this->count++;
+      }
+      int count;
+  };
+  void test02()
+  {
+      MyPrint myPrint;
+      myPrint("Hello");
+      myPrint("Hello");
+      myPrint("Hello");
+      cout << myPrint.count << endl;
+  }
+  ```
+
+  
+
+- 函数对象可以作为参数传递
+
+  ```
+  void doPrint(MyPrint &mp, string test)
+  {
+      mp(test);
+  }
+  void test03()
+  {
+      MyPrint mp;
+      doPrint(mp, "Hello world");
+  }
+  ```
+
+  ### 谓词
+
+  概念：
+
+  - 返回bool类型的仿函数称为谓词
+  - 如果operator()接受一个参数，那么叫一元谓词
+  - 如果operator()接受二个参数，那么叫二元谓词
+
+  
+  
+  
+  
+  
+
