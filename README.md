@@ -23,4 +23,12 @@
 ## 刷题
 
 1. [数组](https://gitee.com/yunke120/note-yunke120/blob/master/%E5%88%B7%E9%A2%98/%E6%95%B0%E7%BB%84.md)
-2. 
+
+
+
+## 数据结构
+
+[笔记](https://gitee.com/yunke120/note-yunke120/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/note.md)
+
+
+
