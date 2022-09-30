@@ -46,9 +46,30 @@
 
 缺点：插入和删除操作需要移动大量元素$O(n)$；当线性表长度变化较大时，难以确定存储空间的容量；造成存储空间的“碎片”；
 
+顺序存储结构代码：
+
+```c
+#define MAXSIZE 20;
+typedef int ElemType;
+typedef struct{
+	ELemType data[MAXSIZE];
+	int length;
+}SqlList;
+```
 
 
 
+
+
+链式存储结构代码（单链表）：
+
+```c
+typedef struct Node{
+	ElemType data;
+	struct Node *next;
+}Node;
+typedef struct Node *LinkList;
+```
 
 
 
