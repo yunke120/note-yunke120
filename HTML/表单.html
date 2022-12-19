@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>表单</title>
+    </head>
+
+    <body>
+        <h1>表单</h1>
+        没有name属性无法提交数据
+        <h2>form属性</h2>
+        <ul>
+            <li>action 提交表单的地址</li>
+            <li>method 提交方式 [get, post] 必须设置表单元素name属性值，否则无法获取数据</li>
+            <li>target 打开窗口的方式 [_self, _blank]</li>
+        </ul>
+
+        <h2>Get请求与Post请求区别</h2>
+        <!-- post请求需要服务器的支持 -->
+        <ol>
+            <li>get请求时参数会跟在浏览器地址栏的后面，post请求不会(post请求会将数据存放在请求体中)</li>
+            <li>get请求相对于post请求而言，安全性较低</li>
+            <li>get请求传递的数据长度是有限的，而post请求基本没有限制(与服务器相关)</li>
+            <li>get请求比post请求快（2倍左右）</li>
+            <li>get请求有缓存（会将数据存放在浏览器中，即本地磁盘中），post请求无缓存</li>
+        </ol>
+
+        <!-- 
+             id属性 用来标识元素的唯一性 
+             name 提交数据时的参数名
+             style 设置元素的行内元素
+             class 设置元素的样式名
+        -->
+
+        <h2>常用标签</h2>
+        <ol>
+            <li>input</li>
+                <ul>
+                    <li>type: 元素的类型 [text, password, radio, checkbox, file， button, submit， reset, date, time]</li>
+                        radio:单选框通过设置name属性来分组<br>
+                        file:文件域 表单需要设置enctype属性 enctype="multipart/form-data",提交方式为post
+                    <li>value: 元素的值</li>
+                    <li>readonly: 只读状态</li>
+                    <li>maxlength: 限制写入的长度</li>
+                </ul>
+            
+            <li>textarea</li>
+                定义可输入多行文本的控件
+                <ul>
+                    <li>cols 文本的可见宽度</li>
+                    <li>rows 可见高度</li>
+                </ul>
+
+            <li>label</li>
+                <ul>
+                    <li>for 当for属性与元素的id值一致时，点击lable标签，会自动向元素聚焦</li>
+                </ul>
+
+            <li>button</li>
+                和input基本一样，不同的是button可以设置双标签
+            <li>select</li>
+                <ul>
+                    <li>multiple 设置下拉框可多选 </li>
+                    <li>option 设置下拉框选项标签</li>
+                        属性：selected 默认项<br>
+                                disabled 禁用项<br>
+                                value 提交给服务器的选项值，如果设置value属性值，则提交的是value的值，如果未设置，则提交的是option中的双标签中的值
+                    <li>size 设置下拉框可见项数</li>
+                    <li>disabled 禁用元素</li>
+                </ul>
+
+        </ol>
+
+        <hr>
+        <h2>Example</h2>
+        <form action="https:www.baidu.com" method="get" target="_blank">
+            用户名：<input type="text" name="uname" />
+            <button>提交</button>
+        </form>
+
+        <h4>input</h4>
+        <form action="https:www.baidu.com" method="get">
+            文本框：<input type="text" value="html" readonly="readonly"><br>
+            文本框：<input type="text" value="html" maxlength="10" name="uname"><br>
+            密码框：<input type="password" value="" maxlength="10"><br>
+            单选框：<input type="radio" value="man" name="sex">男 <input type="radio" value="woman" name="sex">女<br>
+            复选框：<input type="checkbox" value="man" name="sex">男 <input type="checkbox" value="woman" name="sex">女<br>
+            文件域：<input type="file"><br>
+            隐藏域：<input type="hidden" value="admin"><br>
+            普通按钮：<input type="button" value="button" disabled="disabled"><br>
+            提交按钮：<input type="submit" value="submit"><br>
+            重置按钮： <input type="reset" value="reset"> <br>
+            日期框：<input type="date" value="2022-12-20"><br>
+            时间框：<input type="time" value="00:36"><br>
+        </form>
+
+        <h4>textarea</h4>
+        姓名：<input type="text" name="uname"><br>
+        简介：<textarea name="area" id="" cols="30" rows="10"></textarea><br>
+
+        <h4>label</h4>
+        <label for="uname">姓名</label>：<input id="uname" type="text" name="uname"><br>
+
+        <h4>button</h4>
+        <form action="https:www.baidu.com" method="get">
+            输入：<input type="text" name="uname"><br>
+            <button type="button">普通按钮</button><br>
+            <button type="submit">提交按钮</button><br>
+            <button type="reset">重置按钮</button><br>
+            <button type="menu">菜单按钮</button><br>
+        </form>
+        
+        <h4>select</h4>
+        <select name="langeage" disabled="disabled" >
+            <option value="html">html</option>
+            <option value="css">css</option>
+            <option value="javascript">javascript</option>
+        </select>
+        <br><br>
+        <select name="langeage" multiple="multiple" size="2">
+            <option value="html">html</option>
+            <option value="css">css</option>
+            <option value="javascript">javascript</option>
+            <option value="python">python</option>
+        </select>
+        <br><br>
+        <select name="langeage">
+            <option value="">请选则</option>
+            <option value="html">html</option>
+            <option value="css"  selected="selected">css</option>
+            <option value="javascript" disabled="disabled">javascript</option>
+        </select>
+
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    </body>
+
+</html>
