@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>table</title>
+    </head>
+
+    <body>
+
+        <h1>表格</h1>
+        <hr>
+        <h2>属性</h2>
+        <li>table 表格</li>
+        <li>tr 行 每一行可以包含一个或多个td或th</li>
+        <li>td 表示表格中的标准单元格</li>
+        <li>th 表头单元格</li>
+        <h3>table 属性</h3>
+        <li>border 边框</li>
+        <li>width 宽度 [像素， 百分比] 参考的是上一级元素的宽度，如果未设置则参考屏幕宽度</li>
+        <li>height 高度</li>
+        <li>align 表格对其方式</li>
+        <h3>tr属性</h3>
+        <li>align 横向对齐 [left center right]</li>
+        <li>valign 纵向对齐 [top center bottom]</li>
+        <li>bgcolor 设置行的背景颜色</li>
+        <h3>td</h3>
+        <li>colspan 纵向合并单元格</li>
+        <li>rowspan 横向合并单元格</li>
+        <hr>
+        
+        <h2>example</h2>
+        
+        <table border="2" width="500px" height="150" style="border-collapse: collapse;" align="center">
+            <tr  bgcolor="#cccccc">
+                <th>class</th>
+                <th>name</th>
+                <th>age</th>
+                <th>gender</th>
+            </tr>
+
+            <tr align="center" valign="top">
+                <td>01</td>
+                <td>java</td>
+                <td>18</td>
+                <td>man</td>
+            </tr>
+
+            <tr align="center" valign="bottom">
+                <td>02</td>
+                <td>html</td>
+                <td>16</td>
+                <td>woman</td>
+            </tr>
+        </table>
+
+        <br>
+        <h3 align="center">纵向合并</h3>
+        <table border="2" width="500px" height="150" style="border-collapse: collapse;" align="center">
+            <tr  bgcolor="#cccccc">
+                <th>class</th>
+                <th>name</th>
+                <th>age</th>
+                <th>gender</th>
+            </tr>
+
+            <tr align="center" valign="center">
+                <td rowspan="2">01</td>
+                <td>java</td>
+                <td>18</td>
+                <td>man</td>
+            </tr>
+
+            <tr align="center" valign="center">
+                <td>html</td>
+                <td>16</td>
+                <td>woman</td>
+            </tr>
+        </table>
+
+        <h3 align="center">横向合并</h3>
+        <table border="2" width="500px" height="150" style="border-collapse: collapse;" align="center">
+            <tr  bgcolor="#cccccc">
+                <th colspan="2">class+name</th>
+                <!-- <th>name</th> -->
+                <th>age</th>
+                <th>gender</th>
+            </tr>
+
+            <tr align="center" valign="center">
+                <td >01</td>
+                <td>java</td>
+                <td>18</td>
+                <td>man</td>
+            </tr>
+
+            <tr align="center" valign="center">
+                <td >02</td>
+                <td>html</td>
+                <td>16</td>
+                <td>woman</td>
+            </tr>
+        </table>
+    </body>
+
+</html>
