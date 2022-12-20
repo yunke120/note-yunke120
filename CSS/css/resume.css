@@ -1,0 +1,37 @@
+
+
+#container {
+    background-color:#F0F0F0;
+    margin: 0 15%;
+}
+
+h1 {
+    background-color: cornflowerblue;
+    color: white;
+    height: 70px;
+    line-height: 70px;
+    text-indent: 70px;
+}
+
+#nav {
+    text-align: center;
+}
+
+#nav li {
+    display: inline-block;
+    width: 100px;
+    height: 30px;
+    background-color: cornflowerblue;
+    line-height: 30px;
+    border: 1px solid cornflowerblue;
+    border-radius: 0 15px 0 15px;
+}
+
+#nav li a {
+    text-decoration: none;
+    color: white;
+}
+
+#nav li a:hover{
+    font-weight: bold;
+}
